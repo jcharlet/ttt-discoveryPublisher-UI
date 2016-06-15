@@ -1,0 +1,7 @@
+#seriesToAdd, #seriesToRemove, #publish, #seriesInfo, #logs{
+	display:none;
+}
+
+#logs {
+	margin:25px 50px 25px 50px;
+}

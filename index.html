@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Traces Through Time: discovery Publisher</title>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/discoveryPublisherUI.css"/>
+</head>
+
+<body>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Traces Through Time: discovery Publisher</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-4">
+            <select class="form-control col-md-4" id="feature">
+              <option disabled selected>Select an action</option>
+              <option value="add">ADD a collection of links to Discovery</option>
+              <option value="remove">REMOVE a collection of links from Discovery</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <select class="form-control" id="seriesToAdd">
+              <option disabled selected>Select a collection of links to add</option>
+              <option value="1">ADM339 with ADM337</option>
+              <option value="2">ADM339 with ADM188</option>
+            </select>
+            <select class="form-control" id="seriesToRemove">
+              <option disabled selected>Select a collection of links to remove</option>
+              <option value="1">ADM339 with ADM337</option>
+              <option value="2">ADM339 with ADM188</option>
+            </select>
+            <div class="alert alert-success" id="seriesInfo" role="alert"></div>
+          </div>
+
+          <div class="col-md-4">
+            <button type="button" class="btn btn-primary" id="publish">Publish</button>
+          </div>
+        </div>
+        <div class="row">
+          <pre id="logs" class="pre-scrollable"></pre>
+        </div>
+    </div>
+
+  </div>
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/discoveryPublisherUI.js"></script>
+</body>
+
+</html>
