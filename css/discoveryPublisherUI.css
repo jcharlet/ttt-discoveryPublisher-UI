@@ -1,7 +1,8 @@
-#seriesToAdd, #seriesToRemove, #publish, #seriesInfo, #logs{
+#seriesToAdd, #seriesToRemove, #publish, #seriesInfo, #logs, #stop{
 	display:none;
 }
 
 #logs {
 	margin:25px 50px 25px 50px;
+	max-height:500px;
 }
