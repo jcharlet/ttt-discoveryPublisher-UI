@@ -1,4 +1,16 @@
+//https://developer.mozilla.org/en/docs/Web/API/Window/localStorage
 
+
+if (window.Worker) { // Check if Browser supports the Worker api.
+    // Requries script name as input
+    var myWorker = new Worker("js/retrieveLogs.js");
+
+
+    myWorker.onmessage = function(e) {
+      $('#logs').append(e.data+'\n');
+      console.log('Message received from worker');
+    };
+  }
 
 $(document).ready(function(){
   if (localStorage['currentRun']){
@@ -14,8 +26,6 @@ $(document).ready(function(){
 
 
     $('#logs').show('fast');
-    $('#logs').text(dataLinkerLogs);
-
   }
 
 
@@ -58,14 +68,16 @@ $(document).ready(function(){
   });
 
   $('#publish').click(function(){
-    $('#logs').show('fast');
-    $('#logs').text(dataLinkerLogs);
     localStorage['currentRun'] = $('#selectFeature option:selected').val() + "," + $('#seriesToAdd option:selected').val();
     $('#seriesToAdd').prop('disabled', true);
     $('#selectFeature').prop('disabled', true);
     $('#seriesInfo').hide('fast')
     $('#publish').hide('fast')
     $('#stop').show('fast')
+    $('#logs').show('fast');
+    $('#logs').text("");
+    myWorker.postMessage({'cmd': 'displayLogs'});
+    // $('#logs').text(dataLinkerLogs);
   });
 
   $('#stop').click(function(){
@@ -74,6 +86,7 @@ $(document).ready(function(){
     $('#selectFeature').prop('disabled', false);
     $('#stop').hide('fast')
     $('#publish').show('fast')
+    myWorker.postMessage({'cmd': 'stopDisplayingLogs'});
   });
 });
 
@@ -110,39 +123,5 @@ const getCurrentlyPublishedLinkedSeries=`
 [{"iaid":"C2133","linkedToSeries":[{"sourceName":"AIR79_26Feb2016","targetIaid":"C1897","targetName":"ADM188_RNAS_25Feb2016","linksCollectionName":"link_201604121259_ADM188__AIR79_2"},{"sourceName":"AIR79_26Feb2016","targetIaid":"C2133","targetName":"AIR79_26Feb2016","linksCollectionName":"link_201604121100_AIR79_2_AIR79_2"},{"sourceName":"AIR79_26Feb2016","targetIaid":"C2133","targetName":"AIR79_26Feb2016","linksCollectionName":"link_201604121100_AIR79_2_AIR79_2"},{"sourceName":"AIR79_26Feb2016","targetIaid":"C2130","targetName":"AIR76_25Feb2016","linksCollectionName":"link_201604120509_AIR76_2_AIR79_2"},{"sourceName":"AIR79_26Feb2016","targetIaid":"C1981","targetName":"ADM273_25Feb2016","linksCollectionName":"link_201604110636_ADM273__AIR79_2"},{"sourceName":"AIR79_RN_26Feb2016","targetIaid":"C1897","targetName":"ADM188_26Feb2016","linksCollectionName":"link_201604110606_AIR79_R_ADM188_"}]},{"iaid":"C14731481","linkedToSeries":[{"sourceName":"ADM363_25Feb2016","targetIaid":"C1897","targetName":"ADM188_26Feb2016","linksCollectionName":"link_201604120742_ADM363__ADM188_"},{"sourceName":"ADM363_25Feb2016","targetIaid":"C14731481","targetName":"ADM363_25Feb2016","linksCollectionName":"link_201604120616_ADM363__ADM363_"},{"sourceName":"ADM363_25Feb2016","targetIaid":"C14731481","targetName":"ADM363_25Feb2016","linksCollectionName":"link_201604120616_ADM363__ADM363_"},{"sourceName":"ADM363_25Feb2016","targetIaid":"C3387","targetName":"BT351_26Feb2016","linksCollectionName":"link_201604120543_ADM363__BT351_2"},{"sourceName":"ADM363_25Feb2016","targetIaid":"C15126","targetName":"ADM337_25Feb2016","linksCollectionName":"link_201604120118_ADM337__ADM363_"},{"sourceName":"ADM363_25Feb2016","targetIaid":"C14731480","targetName":"ADM362_25Feb2016","linksCollectionName":"link_201604110751_ADM362__ADM363_"}]},{"iaid":"C10913680","linkedToSeries":[{"sourceName":"BT377_26Feb2016","targetIaid":"C10913680","targetName":"BT377_26Feb2016","linksCollectionName":"link_201604120721_BT377_2_BT377_2"},{"sourceName":"BT377_26Feb2016","targetIaid":"C10913680","targetName":"BT377_26Feb2016","linksCollectionName":"link_201604120721_BT377_2_BT377_2"},{"sourceName":"BT377_26Feb2016","targetIaid":"C1897","targetName":"ADM188_B_26Feb2016","linksCollectionName":"link_201604120533_BT377_2_ADM188_"},{"sourceName":"BT377_26Feb2016","targetIaid":"C15126","targetName":"ADM337_25Feb2016","linksCollectionName":"link_201604120138_ADM337__BT377_2"},{"sourceName":"BT377_26Feb2016","targetIaid":"C3202","targetName":"BT164_25Feb2016","linksCollectionName":"link_201604110701_BT164_2_BT377_2"},{"sourceName":"BT377_26Feb2016","targetIaid":"C1897","targetName":"ADM188_A_26Feb2016","linksCollectionName":"link_201604120411_BT377_2_ADM188_"}]},{"iaid":"C2130","linkedToSeries":[{"sourceName":"AIR76_25Feb2016","targetIaid":"C2130","targetName":"AIR76_25Feb2016","linksCollectionName":"link_201604120637_AIR76_2_AIR76_2"},{"sourceName":"AIR76_25Feb2016","targetIaid":"C2130","targetName":"AIR76_25Feb2016","linksCollectionName":"link_201604120637_AIR76_2_AIR76_2"},{"sourceName":"AIR76_25Feb2016","targetIaid":"C2133","targetName":"AIR79_26Feb2016","linksCollectionName":"link_201604120509_AIR76_2_AIR79_2"},{"sourceName":"AIR76_25Feb2016","targetIaid":"C14543","targetName":"WO339_25Feb2016","linksCollectionName":"link_201604120410_AIR76_2_WO339_2"},{"sourceName":"AIR76_25Feb2016","targetIaid":"C1981","targetName":"ADM273_25Feb2016","linksCollectionName":"link_201604110617_ADM273__AIR76_2"}]},{"iaid":"C14543","linkedToSeries":[{"sourceName":"WO339_25Feb2016","targetIaid":"C2130","targetName":"AIR76_25Feb2016","linksCollectionName":"link_201604120410_AIR76_2_WO339_2"},{"sourceName":"WO339_25Feb2016","targetIaid":"C14578","targetName":"WO374_25Feb2016","linksCollectionName":"link_201604110813_WO374_2_WO339_2"},{"sourceName":"WO339_25Feb2016","targetIaid":"C14284","targetName":"WO76_25Feb2016","linksCollectionName":"link_201604110719_WO76_25_WO339_2"},{"sourceName":"WO339_25Feb2016","targetIaid":"C14543","targetName":"WO339_25Feb2016","linksCollectionName":"link_201605161233_WO339_2_WO339_2"},{"sourceName":"WO339_25Feb2016","targetIaid":"C14543","targetName":"WO339_25Feb2016","linksCollectionName":"link_201605161233_WO339_2_WO339_2"}]},{"iaid":"C1868","linkedToSeries":[{"sourceName":"ADM159_26Feb2016","targetIaid":"C1868","targetName":"ADM159_26Feb2016","linksCollectionName":"link_201604120652_ADM159__ADM159_"},{"sourceName":"ADM159_26Feb2016","targetIaid":"C1868","targetName":"ADM159_26Feb2016","linksCollectionName":"link_201604120652_ADM159__ADM159_"},{"sourceName":"ADM159_26Feb2016","targetIaid":"C1897","targetName":"ADM188_26Feb2016","linksCollectionName":"link_201604120226_ADM159__ADM188_"},{"sourceName":"ADM159_26Feb2016","targetIaid":"C1905","targetName":"ADM196_25Feb2016","linksCollectionName":"link_201604111025_ADM196__ADM159_"}]},{"iaid":"C15486","linkedToSeries":[{"sourceName":"ADM339_25Feb2016","targetIaid":"C15486","targetName":"ADM339_25Feb2016","linksCollectionName":"link_201604120555_ADM339__ADM339_"},{"sourceName":"ADM339_25Feb2016","targetIaid":"C15486","targetName":"ADM339_25Feb2016","linksCollectionName":"link_201604120555_ADM339__ADM339_"},{"sourceName":"ADM339_25Feb2016","targetIaid":"C1897","targetName":"ADM188_26Feb2016","linksCollectionName":"link_201604111001_ADM339__ADM188_"},{"sourceName":"ADM339_25Feb2016","targetIaid":"C3387","targetName":"BT351_26Feb2016","linksCollectionName":"link_201604110845_ADM339__BT351_2"},{"sourceName":"ADM339_25Feb2016","targetIaid":"C15126","targetName":"ADM337_25Feb2016","linksCollectionName":"link_201604110826_ADM339__ADM337_"}]},{"iaid":"C3387","linkedToSeries":[{"sourceName":"BT351_26Feb2016","targetIaid":"C1897","targetName":"ADM188_B_26Feb2016","linksCollectionName":"link_201604121055_BT351_2_ADM188_"},{"sourceName":"BT351_26Feb2016","targetIaid":"C3387","targetName":"BT351_26Feb2016","linksCollectionName":"link_201604120807_BT351_2_BT351_2"},{"sourceName":"BT351_26Feb2016","targetIaid":"C3387","targetName":"BT351_26Feb2016","linksCollectionName":"link_201604120807_BT351_2_BT351_2"},{"sourceName":"BT351_26Feb2016","targetIaid":"C14731481","targetName":"ADM363_25Feb2016","linksCollectionName":"link_201604120543_ADM363__BT351_2"},{"sourceName":"BT351_26Feb2016","targetIaid":"C15126","targetName":"ADM337_25Feb2016","linksCollectionName":"link_201604120202_ADM337__BT351_2"},{"sourceName":"BT351_26Feb2016","targetIaid":"C1905","targetName":"ADM196_25Feb2016","linksCollectionName":"link_201604111046_ADM196__BT351_2"},{"sourceName":"BT351_26Feb2016","targetIaid":"C15486","targetName":"ADM339_25Feb2016","linksCollectionName":"link_201604110845_ADM339__BT351_2"},{"sourceName":"BT351_26Feb2016","targetIaid":"C1948","targetName":"ADM240_25Feb2016","linksCollectionName":"link_201604110742_ADM240__BT351_2"},{"sourceName":"BT351_26Feb2016","targetIaid":"C16062","targetName":"ADM340_25Feb2016","linksCollectionName":"link_201604110652_ADM340__BT351_2"},{"sourceName":"BT351_26Feb2016","targetIaid":"C1897","targetName":"ADM188_A_26Feb2016","linksCollectionName":"link_201604120926_BT351_2_ADM188_"}]},{"iaid":"C15126","linkedToSeries":[{"sourceName":"ADM337_25Feb2016","targetIaid":"C15126","targetName":"ADM337_25Feb2016","linksCollectionName":"link_201604120601_ADM337__ADM337_"},{"sourceName":"ADM337_25Feb2016","targetIaid":"C15126","targetName":"ADM337_25Feb2016","linksCollectionName":"link_201604120601_ADM337__ADM337_"},{"sourceName":"ADM337_25Feb2016","targetIaid":"C1897","targetName":"ADM188_26Feb2016","linksCollectionName":"link_201604120335_ADM337__ADM188_"},{"sourceName":"ADM337_25Feb2016","targetIaid":"C3387","targetName":"BT351_26Feb2016","linksCollectionName":"link_201604120202_ADM337__BT351_2"},{"sourceName":"ADM337_25Feb2016","targetIaid":"C10913680","targetName":"BT377_26Feb2016","linksCollectionName":"link_201604120138_ADM337__BT377_2"},{"sourceName":"ADM337_25Feb2016","targetIaid":"C14731481","targetName":"ADM363_25Feb2016","linksCollectionName":"link_201604120118_ADM337__ADM363_"},{"sourceName":"ADM337_25Feb2016","targetIaid":"C15486","targetName":"ADM339_25Feb2016","linksCollectionName":"link_201604110826_ADM339__ADM337_"}]},{"iaid":"C14578","linkedToSeries":[{"sourceName":"WO374_25Feb2016","targetIaid":"C14543","targetName":"WO339_25Feb2016","linksCollectionName":"link_201604110813_WO374_2_WO339_2"},{"sourceName":"WO374_25Feb2016","targetIaid":"C14284","targetName":"WO76_25Feb2016","linksCollectionName":"link_201604110708_WO76_25_WO374_2"},{"sourceName":"WO374_25Feb2016","targetIaid":"C14578","targetName":"WO374_25Feb2016","linksCollectionName":"link_201605161205_WO374_2_WO374_2"},{"sourceName":"WO374_25Feb2016","targetIaid":"C14578","targetName":"WO374_25Feb2016","linksCollectionName":"link_201605161205_WO374_2_WO374_2"}]}]
 `
 
- const dataLinkerLogs = `
-2016-06-10 10:34:02 INFO  TTTService:75 - start TTT Process
-2016-06-10 10:34:02 INFO  TTTService:77 - Initialise Data
-2016-06-10 10:34:02 INFO  TTTService:158 - use External statistics on names
-2016-06-10 10:34:02 INFO  TTTService:89 - Process inputs
-2016-06-10 10:34:02 INFO  ProcessInputService:81 - collection ADM240_25Feb2016 already exists in database. We do not process input file
-2016-06-10 10:34:02 INFO  TTTService:92 - running the linker on a single file, do not process inputs for "second file"
-2016-06-10 10:34:02 INFO  TTTService:109 - Start Optimisation
-2016-06-10 10:34:02 INFO  OptimisationService:55 - processOptimisation
-2016-06-10 10:34:02 INFO  OptimisationService:73 - optimising on 'familyname' using 'metaphone' partitioning optimiserConfiguration and 'Jaro-Winkler' candidate generator
-2016-06-10 10:34:02 INFO  OptimisationService:147 - partition collections
-2016-06-10 10:34:03 INFO  PartitioningTool:41 - size of multi value map = 3197
-2016-06-10 10:34:03 INFO  OptimisationService:154 - generate candidates
-2016-06-10 10:34:20 INFO  OptimisationService:94 - create indexes
-2016-06-10 10:34:30 INFO  OptimisationService:100 - intersect optimisation results
-2016-06-10 10:34:33 INFO  OptimisationService:206 - optimiser table 'opti_201606101034_ADM240__ADM240_' has 529846 entries
-2016-06-10 10:34:33 INFO  TTTService:125 - Start Linker
-2016-06-10 10:34:33 INFO  LinkerService:95 - Entering link Method
-2016-06-10 10:34:33 INFO  LinkerService:100 - people will be linked on forenames and firstnames
-2016-06-10 10:34:33 INFO  LinkerService:104 - people will be linked on dob
-2016-06-10 10:34:45 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14614262 and TTT-C1948_C14614449
-2016-06-10 10:34:49 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14626223 and TTT-C1948_C14618785
-2016-06-10 10:34:55 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14614300 and TTT-C1948_C14614471
-2016-06-10 10:34:55 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14614300 and TTT-C1948_C14638744
-2016-06-10 10:34:55 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14614300 and TTT-C1948_C14641470
-2016-06-10 10:34:55 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14614471 and TTT-C1948_C14638744
-2016-06-10 10:34:55 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14614471 and TTT-C1948_C14641470
-2016-06-10 10:34:55 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14641470 and TTT-C1948_C14638744
-2016-06-10 10:35:01 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14625349 and TTT-C1948_C14635457
-2016-06-10 10:35:01 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14625349 and TTT-C1948_C14635843
-2016-06-10 10:35:01 WARN  LinkerService:177 - a link already exists on TTT-C1948_C14623102 and TTT-C1948_C14625349
-2016-06-10 10:35:01 INFO  LinkerService:118 - create index on linker collection
-2016-06-10 10:35:01 INFO  LinkerService:121 - finished link process, see collection: link_201606101034_ADM240__ADM240_
-2016-06-10 10:35:01 INFO  TTTService:136 - Log and Audit
-2016-06-10 10:35:01 INFO  TTTService:141 - clean Optimisation collections
-2016-06-10 10:35:01 INFO  TTTService:145 - process completed`
+
+
