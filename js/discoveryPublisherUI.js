@@ -1,6 +1,13 @@
 //https://developer.mozilla.org/en/docs/Web/API/Window/localStorage
 
 
+// events handling
+// update UI
+// storage and DB
+// glue which brings everything together
+
+// 
+
 if (window.Worker) { // Check if Browser supports the Worker api.
     // Requries script name as input
     var myWorker = new Worker("js/retrieveLogs.js");
@@ -14,10 +21,11 @@ if (window.Worker) { // Check if Browser supports the Worker api.
 
 $(document).ready(function(){
   if (localStorage['currentRun']){
-    $('#selectFeature').prop('disabled', true);
-    $('#selectFeature').val(localStorage['currentRun'].split(",")[0]);
+    var $selectFeature=$('#selectFeature')
+    $selectFeature.prop('disabled', true);
+    $selectFeature.val(localStorage['currentRun'].split(",")[0]);
 
-    $('#seriesToAdd').prop('disabled', true);
+    $selectFeature.prop('disabled', true);
     refreshListOfSeriesToAdd();
     $('#seriesToAdd').val(localStorage['currentRun'].split(",")[1]);
     $('#seriesToAdd').show('fast');  
